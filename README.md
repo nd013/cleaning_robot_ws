@@ -63,13 +63,21 @@ source ~/catkin_ws/devel/setup.bash
 ## 2.1 Download the compiled package
 ```
 mkdir -p cleaning_robot_ws/src && cd clean_robot_ws/src
-git clone 
+git clone https://github.com/nd013/cleaning_robot_ws.git
 cd ..
 catkin_make
 ```
+## 2.2 Self-cleaning
+Here, You need to make updates to the launch files 
+```
+cd cleaning_robot_ws
+source devel/setup.bash
+roslaunch serve_clean clean_work.launch
+roslaunch serve_clean clean_work.launch map_file:="/home/xxx/cleaning_robot_ws/yourmap.yaml"
+```
 
-
-
+## 2.3 Sources 
+(https://www.sciencedirect.com/science/article/pii/S2352664516300050)
 
 
 
