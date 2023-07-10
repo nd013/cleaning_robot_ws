@@ -1,0 +1,30 @@
+?xml version="1.0" ?>
+
+<launch>
+  <!-- Arguments -->
+  <arg name="map_file" default="$(find serve_clean)/maps/your_map.yaml"/>
+  <arg name="move_forward_only" default="false"/>
+  <arg name="exploration" default="false"/>
+
+  <!-- Map Publishing Node for Exploration-->
+  <group if="$(arg exploration)">
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" args="-resolution 0.01" />
+  </group>
+
+  <!-- Map server for Map-based Navigation-->
+  <group unless="$(arg exploration)">
+    <node pkg="map_server" name="map_server" type="map_server" args="$(find serve_clean)/maps/your_map.yaml"/>
+  </group>
+
+  <!-- AMCL -->
+  <include file="$(find serve_clean)/launch/amcl.launch"/>
+
+  <!-- move_base -->
+  <include file="$(find clean_robot)/launch/move_base.launch">
+    <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+  </include>
+
+  <!-- rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find serve_navigation)/rviz/serve_navigation.rviz"/>
+
+</launch>
